@@ -55,6 +55,9 @@ class Array:
             return Array([[a * b for a, b in zip(row1, row2)] for row1, row2 in zip(self.data, other.data)])
         else:
             return Array([[element * other for element in row] for row in self.data])
+        
+    def __rmul__(self, other: Union[float, int]) -> 'Array':
+        return self.__mul__(other)
 
     def __truediv__(self, other: Union['Array', float, int]) -> 'Array':
         if isinstance(other, Array):
@@ -88,6 +91,7 @@ if __name__ == "__main__":
     print(x + y)  # Array([5, 7, 9])
     print(x - y)  # Array([-3, -3, -3])
     print(x * 2)  # Array([2, 4, 6])
+    print(2 * x)
     print(z * 2)  # Array([[2, 4], [6, 8]])
 
     # Produit scalaire
