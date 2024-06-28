@@ -26,15 +26,17 @@ class Array:
         else:
             self.data[index] = value
     
+   
     def __add__(self, other: 'Array') -> 'Array':
-        if self.shape != other.shape:
-            raise ValueError("Les tableaux doivent être de même forme pour effectuer l'addition.")
         if isinstance(other, Array):
-            new_data = [a + b for a, b in zip(self.data, other.data)]
-            return Array(new_data)
+            if self.shape != other.shape:
+                raise ValueError("Les formes doivent etre les memes pour les operations par element")
+            if len(self.shape) == 1:
+                return Array([a + b for a, b in zip(self.data[0], other.data[0])])
+            return Array([[a + b for a, b in zip(row1, row2)] for row1, row2 in zip(self.data, other.data)])
         else:
-            raise TypeError(f"Types d'opérandes non pris en charge pour l'opération + : et '{type(other).__name__}'")
-        
+            return Array([[element + other for element in row] for row in self.data])
+
     def __sub__(self, other: 'Array') -> 'Array':
         if isinstance(other, Array):
             if self.shape != other.shape:
@@ -75,6 +77,7 @@ class Array:
             return sum(a * b for a, b in zip(self.data[0], other.data[0]))
         else:
             raise ValueError("Le produit scalaire n’est pris en charge que pour les matrices 1D")
+        
     def __contains__(self, item:Any) ->bool:
         return any(item in row for row in self.data)
    
